@@ -33,3 +33,17 @@ A React app where users enter available ingredients, and AI generates recipe ide
 
 - Form validation
 - UI enhancements
+
+
+
+![Recipe1](https://github.com/user-attachments/assets/bdac5794-f187-432a-a58a-0a63f99f9cae)
+
+
+![Recipe2](https://github.com/user-attachments/assets/a39d3312-23f6-434a-8fcd-19752a76eb64)
+
+
+![Recipe3](https://github.com/user-attachments/assets/5910b076-c98e-4013-813c-10a9ed308ebc)
+
+
+
+
