@@ -1,43 +1,56 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ClaudeRecipe from "./ClaudeRecipe";
 import IngredientsList from "./IngredientsList";
+import { getRecipeFromAPI } from "./ApiCall";
 
 export default function Main() {
-  //*****/
-
-  function handleClick() {}
-  //*****/
-
   const [ingredients, setIngredients] = React.useState([
+    "chicken",
     "all the main spices",
+    "corn",
+    "heavy cream",
     "pasta",
-    "ground beef",
-    "tomato paste",
   ]);
+  const [recipe, setRecipe] = React.useState("");
+  const recipeSection = React.useRef(null);
 
-  const [receipeShown, setReceipeShown] = React.useState(false);
+  useEffect(() => {
+    if (recipe && recipeSection.current) {
+      recipeSection.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [recipe]);
 
-  function addIngredients(formData) {
-    let newIngredient = formData.get("ingredient");
-    setIngredients((prev) => [...prev, newIngredient]);
+  async function getRecipe() {
+    const recipeMarkdown = await getRecipeFromAPI(ingredients);
+    setRecipe(recipeMarkdown);
+  }
+
+  function addIngredient(formData) {
+    const newIngredient = formData.get("ingredient");
+    setIngredients((prevIngredients) => [...prevIngredients, newIngredient]);
   }
 
   return (
     <main>
-      {/* <form onSubmit={submit}> */}
-      <form action={addIngredients}>
-        <input placeholder="e.g. Oregano" name="ingredient" />
-        <button onClick={handleClick}>
-          <span>+ Add ingredient</span>
-        </button>
+      <form action={addIngredient} className="add-ingredient-form">
+        <input
+          type="text"
+          placeholder="e.g. oregano"
+          aria-label="Add ingredient"
+          name="ingredient"
+        />
+        <button>Add ingredient</button>
       </form>
-      {ingredients.length > 0 ? (
+
+      {ingredients.length > 0 && (
         <IngredientsList
           ingredients={ingredients}
-          handleRecipeShown={setReceipeShown}
+          getRecipe={getRecipe}
+          ref={recipeSection}
         />
-      ) : null}
-      {receipeShown ? <ClaudeRecipe /> : null}
+      )}
+
+      {recipe && <ClaudeRecipe recipe={recipe} />}
     </main>
   );
 }
